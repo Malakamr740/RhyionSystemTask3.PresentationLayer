@@ -8,4 +8,5 @@ namespace RhyionSystemTask3.DataAccessLayer.Repository
     {
         public ProductRepository(AppDBContext context) : base(context) { }
     }
+
 }

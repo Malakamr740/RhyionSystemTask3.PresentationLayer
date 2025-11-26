@@ -24,6 +24,5 @@ namespace RhyionSystemTask3.DataAccessLayer.Repository
             _context.Entry(entity).State = EntityState.Modified;
         }
         public void Delete(TEntity entity) => _dbSet.Remove(entity);
-        public async Task<int> SaveChangesAsync() => await _context.SaveChangesAsync();
     }
 }

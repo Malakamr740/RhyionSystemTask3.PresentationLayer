@@ -7,7 +7,7 @@ namespace RhyionSystemTask3.DataAccessLayer.Context
     {
         override protected void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=.;Database=RhyionSystemTask3DB;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("Server=.;Database=RhyionSystemTask3DB;Trusted_Connection=True;TrustServerCertificate=True");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

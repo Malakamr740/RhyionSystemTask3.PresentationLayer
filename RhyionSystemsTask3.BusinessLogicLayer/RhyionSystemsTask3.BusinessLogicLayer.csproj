@@ -11,4 +11,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.22" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RhyionSystemTask3.DataAccessLayer\RhyionSystemTask3.DataAccessLayer.csproj" />
+  </ItemGroup>
+
 </Project>
