@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using RhyionSystemTask3.DataAccessLayer.Models;
 using RhyionSystemsTask3.BusinessLogicLayer.Interfaces;
 using RhyionSystemTask3.DataAccessLayer.Interfaces;
 using RhyionSystemTask3.DataAccessLayer.UnitOfWork;
@@ -244,7 +239,6 @@ namespace RhyionSystemTask3.PresentationLayer
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IPaymentRepository, PaymentRepository>();
 
-            // BLL services — Presentation interacts only with these
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IProductService,ProductService>();
             services.AddScoped<IOrderService,OrderService>();
