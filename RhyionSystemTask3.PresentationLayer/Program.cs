@@ -26,14 +26,12 @@ namespace RhyionSystemTask3.PresentationLayer
             using var scope = host.Services.CreateScope();
             var sp = scope.ServiceProvider;
 
-            // Presentation only resolves BLL interfaces
             var userService = sp.GetService<IUserService>() ?? throw new InvalidOperationException("IUserService not registered.");
             var productService = sp.GetService<IProductService>() ?? throw new InvalidOperationException("IProductService not registered.");
             var orderService = sp.GetService<IOrderService>() ?? throw new InvalidOperationException("IOrderService not registered.");
-            var reportService = sp.GetService<IReportService>(); // optional
+            var reportService = sp.GetService<IReportService>(); 
 
-            // If BLL supports a seed path, it should expose it; otherwise inform the user.
-            await EnsureProductsPresentAsync(productService);
+           await EnsureProductsPresentAsync(productService);
 
             Console.WriteLine("=== E-COMMERCE INTERACTIVE CONSOLE (BLL-only) ===");
             var exit = false;
