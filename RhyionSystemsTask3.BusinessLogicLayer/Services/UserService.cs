@@ -27,7 +27,7 @@ namespace RhyionSystemsTask3.BusinessLogicLayer.Services
             var newUser = new User
             {
                 FirstName = firstName,
-                LastName = lastName,
+                LastName = lastName,    
                 Email = email,
             };
 

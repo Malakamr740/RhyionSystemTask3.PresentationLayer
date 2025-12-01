@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using RhyionSystemTask3.DataAccessLayer.Models;
 
 namespace RhyionSystemsTask3.BusinessLogicLayer.Interfaces
 {
-    internal interface IProductService
+    public interface IProductService
     {
+        Task<IEnumerable<Product>> GetAvailableProductsAsync();
+        Task<Product> GetProductDetailsAsync(int productId);
+        Task<bool> CheckProductAvailabilityAsync(int productId, int quantity);
     }
 }

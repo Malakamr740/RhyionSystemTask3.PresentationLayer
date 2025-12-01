@@ -3,12 +3,20 @@ using RhyionSystemTask3.DataAccessLayer.Models;
 
 namespace RhyionSystemTask3.DataAccessLayer.Context
 {
-    public class AppDBContext: DbContext
+    public class AppDBContext : DbContext
     {
-        override protected void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public AppDBContext(DbContextOptions<AppDBContext> options)
+          : base(options)
         {
-            optionsBuilder.UseSqlServer("Server=.;Database=RhyionSystemTask3DB;Trusted_Connection=True;TrustServerCertificate=True");
         }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer("Server=.;Database=RhyionSystemTask3DB;Trusted_Connection=True;TrustServerCertificate=True");
+            }
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<OrderProduct>()
@@ -25,12 +33,12 @@ namespace RhyionSystemTask3.DataAccessLayer.Context
                 .HasForeignKey(op => op.ProductId);
 
             modelBuilder.Entity<Payment>()
-                .HasKey(p => p.OrderId); 
+                .HasKey(p => p.OrderId);
 
             modelBuilder.Entity<Payment>()
                 .HasOne(p => p.Order)
                 .WithOne(o => o.Payment)
-                .HasForeignKey<Payment>(p => p.OrderId); 
+                .HasForeignKey<Payment>(p => p.OrderId);
 
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.User)
@@ -39,12 +47,10 @@ namespace RhyionSystemTask3.DataAccessLayer.Context
 
             base.OnModelCreating(modelBuilder);
         }
-        DbSet<User> Users { get; set; }  
-        DbSet<Order> Orders { get; set; }
-        DbSet<Product> Products { get; set; }
-        DbSet<OrderProduct> OrderProducts { get; set; }
-        DbSet<Payment> Payments { get; set; }
-
-
+        public DbSet<User> Users { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<OrderProduct> OrderProducts { get; set; }
+        public DbSet<Payment> Payments { get; set; }
     }
 }

@@ -1,9 +1,11 @@
-﻿using RhyionSystemsTask3.BusinessLogicLayer.Interfaces;
+﻿
+using RhyionSystemsTask3.BusinessLogicLayer.Interfaces;
 using RhyionSystemTask3.DataAccessLayer.Interfaces;
 using RhyionSystemTask3.DataAccessLayer.Models;
 using RhyionSystemTask3.DataAccessLayer.UnitOfWork;
 
-namespace RhyionSystemsTask3.BusinessLogicLayer.Services
+
+namespace RhyionSystemTask3.PresentationLayer
 {
     public class OrderService : IOrderService
     {
@@ -12,6 +14,8 @@ namespace RhyionSystemsTask3.BusinessLogicLayer.Services
         private readonly IPaymentRepository _paymentRepository;
         private readonly IUserRepository _userRepository;
         private readonly IUnitOfWork _unitOfWork;
+
+
 
         public OrderService(
             IOrderRepository orderRepository,
@@ -24,32 +28,32 @@ namespace RhyionSystemsTask3.BusinessLogicLayer.Services
             _productRepository = productRepository;
             _paymentRepository = paymentRepository;
             _userRepository = userRepository;
-        
             _unitOfWork = unitOfWork;
-        
         }
 
         public async Task<int> PlaceNewOrderAsync(int userId, Dictionary<int, int> productQuantities)
         {
             if (!productQuantities.Any()) throw new ArgumentException("Order must contain products.");
-            var user = await _unitOfWork.Orders.GetByIdAsync(userId) ?? throw new InvalidOperationException($"User {userId} not found.");
+            var user = await _userRepository.GetByIdAsync(userId) ?? throw new InvalidOperationException($"User {userId} not found.");
 
             decimal subtotal = 0;
             var orderProducts = new List<OrderProduct>();
 
             foreach (var item in productQuantities)
             {
-                var product = await _unitOfWork.Products.GetByIdAsync(item.Key) ?? throw new InvalidOperationException($"Product {item.Key} not found.");
+                var product = await _productRepository.GetByIdAsync(item.Key) ?? throw new InvalidOperationException($"Product {item.Key} not found.");
                 if (item.Value <= 0) throw new ArgumentException("Quantity must be positive.");
 
                 subtotal += product.Price * item.Value;
                 orderProducts.Add(new OrderProduct { ProductId = item.Key, Quantity = item.Value });
             }
 
+              
             decimal tax = subtotal * 0.05m;
             decimal shippingFee = subtotal >= 50.00m ? 0m : 5.00m;
             decimal total = subtotal + tax + shippingFee;
 
+                
             var newOrder = new Order
             {
                 UserId = userId,
@@ -59,7 +63,7 @@ namespace RhyionSystemsTask3.BusinessLogicLayer.Services
             };
 
             await _unitOfWork.Orders.AddAsync(newOrder);
-            
+            await _unitOfWork.CommitAsync();
 
             return newOrder.OrderId;
         }
@@ -84,7 +88,7 @@ namespace RhyionSystemsTask3.BusinessLogicLayer.Services
                     PaymentDate = DateTime.UtcNow
                 };
 
-                await _unitOfWork.Payments.AddAsync(payment);
+                await _paymentRepository.AddAsync(payment);
                 await _unitOfWork.CommitAsync();
 
                 return true;
@@ -107,7 +111,9 @@ namespace RhyionSystemsTask3.BusinessLogicLayer.Services
 
         private bool SimulatePaymentGateway(decimal amount, string method)
         {
+                
             return amount > 0 && !method.Contains("Fail");
         }
     }
 }
+

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RhyionSystemTask3.DataAccessLayer.Models;
 
 namespace RhyionSystemsTask3.BusinessLogicLayer.Interfaces
 {
-    internal interface IUserService
+    public interface IUserService
     {
+        Task<int> RegisterNewUserAsync(string firstName, string lastName, string email, string passwordHash);
+        Task<User> GetUserProfileAsync(int userId);
+        Task<bool> UpdateUserProfileAsync(int userId, string newEmail);
     }
 }

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RhyionSystemsTask3.BusinessLogicLayer.Services;
+
 
 namespace RhyionSystemsTask3.BusinessLogicLayer.Interfaces
 {
-    internal interface IReportService
+    public interface IReportService
     {
+        Task<IEnumerable<MonthlySalesReportDto>> GetMonthlySalesReportAsync(DateTime startDate, DateTime endDate);
     }
 }
